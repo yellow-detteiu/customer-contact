@@ -166,7 +166,13 @@ def initialize_agent_executor():
             name = ct.SEARCH_COMPETITORS_INFO_TOOL_NAME,
             func=utils.run_competitors_info_tool,
             description=ct.SEARCH_COMPETITORS_INFO_TOOL_DESCRIPTION
-        )
+        ),
+        # 顧客獲得戦略立案用のTool
+        Tool(
+            name = ct.PLAN_CUSTOMER_MARKETING_STRATEGY_TOOL_NAME,
+            func=utils.run_plan_customer_marketing_strategy_tool,
+            description=ct.PLAN_CUSTOMER_MARKETING_STRATEGY_TOOL_DESCRIPTION
+        ),
     ]
 
     # Agent Executorの作成

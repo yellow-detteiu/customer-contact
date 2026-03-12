@@ -221,6 +221,33 @@ def run_competitors_info_tool(param):
             return "Web検索結果が見つかりませんでした。キーワードを変えて再度お試しください。"
         return f"Web検索でエラーが発生しました: {e}"
 
+def run_plan_customer_marketing_strategy_tool(param):
+
+    service_discription = st.session_state.service_doc_chain.invoke({"input": param, "chat_history": st.session_state.chat_history})
+
+    query = """
+    
+    あなたはマーケティングの専門家です。
+
+    マーケティング戦略や顧客獲得に関する実践的なアドバイスを提供します。
+
+    会社のサービスを広めていくための方法を教えてください。
+    
+    対象サービス： {service_discription}
+
+    """
+
+    q = (query or "").strip().replace('"', "").replace("(", "").replace(")", "")
+
+    if not q:
+        return "検索クエリが空のため、Web検索を実行できませんでした。"
+    try:
+        return SerpAPIWrapper(params={"engine": "google", "hl": "ja", "gl": "jp"}).run(q)
+    except ValueError as e:
+        if "Google hasn't returned any results" in str(e):
+            return "Web検索結果が見つかりませんでした。キーワードを変えて再度お試しください。"
+        return f"Web検索でエラーが発生しました: {e}"
+
 
 def delete_old_conversation_log(result):
     """
