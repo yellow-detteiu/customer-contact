@@ -221,7 +221,8 @@ def run_competitors_info_tool(param):
             return "Web検索結果が見つかりませんでした。キーワードを変えて再度お試しください。"
         return f"Web検索でエラーが発生しました: {e}"
 
-def run_plan_customer_marketing_strategy_tool(param):
+def run_plan_customer_marketing_strategy_tool_old(param):
+    # 修正前の関数
 
     query = """
         あなたはマーケティングの専門家です。
@@ -240,6 +241,75 @@ def run_plan_customer_marketing_strategy_tool(param):
         if "Google hasn't returned any results" in str(e):
             return "Web検索結果が見つかりませんでした。キーワードを変えて再度お試しください。"
         return f"Web検索でエラーが発生しました: {e}"
+    
+
+def _run_serpapi_safe(query: str) -> str:
+    """SerpAPI実行を共通化し、エラー時に扱いやすい文字列を返す。"""
+    q = (query or "").strip()
+    if not q:
+        return "Web検索クエリが空です。"
+
+    # セッションに検索クライアントがなければ初期化
+    if "search" not in st.session_state:
+        st.session_state.search = SerpAPIWrapper(
+            params={"engine": "google", "hl": "ja", "gl": "jp"}
+        )
+
+    try:
+        return st.session_state.search.run(q)
+    except ValueError as e:
+        if "Google hasn't returned any results" in str(e):
+            return "Web検索結果が見つかりませんでした。"
+        return f"Web検索でエラーが発生しました: {e}"
+    except Exception as e:
+        return f"Web検索で予期しないエラーが発生しました: {e}"
+    
+def run_plan_customer_marketing_strategy_tool(param: str) -> str:
+    """
+    2段構成:
+    1) Web検索で外部情報を収集
+    2) LLMで「3戦略 + 根拠 + KPI」に構造化して提案
+    """
+    logger = logging.getLogger(ct.LOGGER_NAME)
+
+    # typo互換: SERVICE_DESCRIPTION がなければ既存名を使う
+    service_description = getattr(
+        ct, "SERVICE_DESCRIPTION", getattr(ct, "SERVICE_DISCRIPTION", "")
+    )
+    user_request = (param or "").strip()
+
+    # 1) Web検索
+    search_query = (
+        f"{service_description} マーケティング戦略 顧客獲得 事例 KPI "
+        f"ターゲティング 施策 成功要因 {user_request}"
+    )
+    web_context = _run_serpapi_safe(search_query)
+
+    # 検索結果が得られなくても、最低限の提案は返す
+    if "エラー" in web_context or "見つかりませんでした" in web_context:
+        logger.info({"tool": "plan_customer_marketing_strategy_tool", "web_context": web_context})
+
+    # 2) LLMで戦略化
+    prompt = PromptTemplate(
+        input_variables=["service_description", "user_request", "web_context"],
+        template=ct.SYSTEM_PROMPT_MARKETING_STRATEGY,
+    )
+    prompt_text = prompt.format(
+        service_description=service_description,
+        user_request=user_request,
+        web_context=web_context,
+    )
+
+    result = st.session_state.llm.invoke(prompt_text)
+    answer = result.content if hasattr(result, "content") else str(result)
+
+    logger.info({
+        "tool": "plan_customer_marketing_strategy_tool",
+        "query": user_request,
+        "search_query": search_query
+    })
+
+    return answer
 
 
 def delete_old_conversation_log(result):
