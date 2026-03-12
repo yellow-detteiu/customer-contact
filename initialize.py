@@ -148,6 +148,12 @@ def initialize_agent_executor():
             name = ct.SEARCH_WEB_INFO_TOOL_NAME,
             func=search.run,
             description=ct.SEARCH_WEB_INFO_TOOL_DESCRIPTION
+        ),
+        # 顧客情報検索用のTool
+        Tool(
+            name = ct.SEARCH_CUSTOMER_INFO_TOOL_NAME,
+            func=search.run,
+            description=ct.SEARCH_CUSTOMER_INFO_TOOL_DESCRIPTION
         )
     ]
 
