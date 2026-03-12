@@ -122,8 +122,8 @@ def initialize_agent_executor():
     st.session_state.rag_chain = utils.create_rag_chain(ct.DB_ALL_PATH)
 
     # Web検索用のToolを設定するためのオブジェクトを用意
-    search = SerpAPIWrapper()
-    #search = SerpAPIWrapper(params={"engine": "google", "hl": "ja", "gl": "jp"}) # エラー予防のため、日本語でGoogle検索を行うためのパラメータを追加
+    #search = SerpAPIWrapper()
+    search = SerpAPIWrapper(params={"engine": "google", "hl": "ja", "gl": "jp"}) # エラー予防のため、日本語でGoogle検索を行うためのパラメータを追加
 
     # Agent Executorに渡すTool一覧を用意
     tools = [

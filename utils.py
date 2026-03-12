@@ -30,6 +30,7 @@ from langchain.retrievers import EnsembleRetriever
 from docx import Document
 from langchain.output_parsers import CommaSeparatedListOutputParser
 from langchain import LLMChain
+from langchain import SerpAPIWrapper
 import datetime
 import constants as ct
 
@@ -214,7 +215,7 @@ def run_competitors_info_tool(param):
     if not q:
         return "検索クエリが空のため、Web検索を実行できませんでした。"
     try:
-        return st.session_state.search.run(q)
+        return SerpAPIWrapper(params={"engine": "google", "hl": "ja", "gl": "jp"}).run(q)
     except ValueError as e:
         if "Google hasn't returned any results" in str(e):
             return "Web検索結果が見つかりませんでした。キーワードを変えて再度お試しください。"
