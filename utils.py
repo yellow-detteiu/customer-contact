@@ -210,7 +210,7 @@ def run_customer_doc_chain(param):
 
 def run_competitors_info_tool(param):
     # 比較観点を固定して検索のブレを減らす
-    query = f"「個人や法人が簡単にオリジナルデザインのTシャツを作成し、環境に配慮した素材で製品化できるWebサービス」 競合 比較 強み 弱み 価格 機能 {param}"
+    query = f"{ct.SERVICE_DISCRIPTION} 競合 比較 強み 弱み 価格 機能 {param}"
     q = (query or "").strip().replace('"', "").replace("(", "").replace(")", "")
     if not q:
         return "検索クエリが空のため、Web検索を実行できませんでした。"
@@ -223,7 +223,7 @@ def run_competitors_info_tool(param):
 
 def run_plan_customer_marketing_strategy_tool(param):
 
-    service_discription = st.session_state.service_doc_chain.invoke({"input": param, "chat_history": st.session_state.chat_history})
+    service_discription = ct.SERVICE_DISCRIPTION
 
     query = """
     

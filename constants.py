@@ -124,6 +124,8 @@ SEARCH_COMPETITORS_INFO_TOOL_DESCRIPTION = "EcoTeeの競合比較が目的の質
 PLAN_CUSTOMER_MARKETING_STRATEGY_TOOL_NAME = "plan_customer_marketing_strategy_tool"
 PLAN_CUSTOMER_MARKETING_STRATEGY_TOOL_DESCRIPTION = "顧客獲得のためのマーケティング戦略立案が目的の質問でのみ使用。顧客の基本情報をもとに、効果的なマーケティング戦略を3つ、具体的に提案する。"
 
+SERVICE_DISCRIPTION = "個人や法人が簡単にオリジナルデザインのTシャツを作成し、環境に配慮した素材で製品化できるWebサービス」"
+
 # ==========================================
 # Slack連携関連
 # ==========================================
