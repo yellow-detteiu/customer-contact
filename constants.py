@@ -119,7 +119,8 @@ SEARCH_WEB_INFO_TOOL_NAME = "search_web_tool"
 SEARCH_WEB_INFO_TOOL_DESCRIPTION = "自社サービス「HealthX」に関する質問で、Web検索が必要と判断した場合に使う"
 SEARCH_CUSTOMER_INFO_TOOL_NAME = "search_customer_info_tool"
 SEARCH_CUSTOMER_INFO_TOOL_DESCRIPTION = "年齢、職業、満足度など、顧客の基本情報を参照したい時に使う"
-
+SEARCH_COMPETITORS_INFO_TOOL_NAME = "search_competitors_info_tool"
+SEARCH_COMPETITORS_INFO_TOOL_DESCRIPTION = "Web検索により、競合他社に関する情報を参照したい時に使う"
 
 # ==========================================
 # Slack連携関連

@@ -154,6 +154,12 @@ def initialize_agent_executor():
             name = ct.SEARCH_CUSTOMER_INFO_TOOL_NAME,
             func=utils.run_customer_doc_chain,
             description=ct.SEARCH_CUSTOMER_INFO_TOOL_DESCRIPTION
+        ),
+        # 競合他社情報検索用のTool
+        Tool(
+            name = ct.SEARCH_COMPETITORS_INFO_TOOL_NAME,
+            func=search.run,
+            description=ct.SEARCH_COMPETITORS_INFO_TOOL_DESCRIPTION
         )
     ]
 
