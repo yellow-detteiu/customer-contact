@@ -223,19 +223,12 @@ def run_competitors_info_tool(param):
 
 def run_plan_customer_marketing_strategy_tool(param):
 
-    service_discription = ct.SERVICE_DISCRIPTION
-
     query = """
-    
-    あなたはマーケティングの専門家です。
-
-    マーケティング戦略や顧客獲得に関する実践的なアドバイスを提供します。
-
-    会社のサービスを広めていくための方法を教えてください。
-    
-    対象サービス： {service_discription}
-
-    """
+        あなたはマーケティングの専門家です。
+        マーケティング戦略や顧客獲得に関する実践的なアドバイスを提供します。
+        会社のサービスを広めていくための方法を教えてください。
+        対象サービス： 
+        """ + ct.SERVICE_DISCRIPTION
 
     q = (query or "").strip().replace('"', "").replace("(", "").replace(")", "")
 
