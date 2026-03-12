@@ -207,6 +207,11 @@ def run_customer_doc_chain(param):
 
     return ai_msg["answer"]
 
+def run_competitors_info_tool(param):
+    # 比較観点を固定して検索のブレを減らす
+    query = f"「個人や法人が簡単にオリジナルデザインのTシャツを作成し、環境に配慮した素材で製品化できるWebサービス」 競合 比較 強み 弱み 価格 機能 {param}"
+    return st.session_state.search.run(query)
+
 
 def delete_old_conversation_log(result):
     """

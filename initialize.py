@@ -158,7 +158,7 @@ def initialize_agent_executor():
         # 競合他社情報検索用のTool
         Tool(
             name = ct.SEARCH_COMPETITORS_INFO_TOOL_NAME,
-            func=search.run,
+            func=utils.run_competitors_info_tool,
             description=ct.SEARCH_COMPETITORS_INFO_TOOL_DESCRIPTION
         )
     ]
