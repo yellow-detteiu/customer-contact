@@ -125,6 +125,10 @@ def initialize_agent_executor():
     #search = SerpAPIWrapper()
     search = SerpAPIWrapper(params={"engine": "google", "hl": "ja", "gl": "jp"}) # エラー予防のため、日本語でGoogle検索を行うためのパラメータを追加
 
+    # エラー防止用
+    if "search" not in st.session_state:
+        st.session_state.search = SerpAPIWrapper(params={"engine": "google", "hl": "ja", "gl": "jp"})
+
     # Agent Executorに渡すTool一覧を用意
     tools = [
         # 会社に関するデータ検索用のTool
