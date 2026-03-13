@@ -449,6 +449,22 @@ def notice_slack(chat_message):
     
     # 問い合わせ内容と関連性が高い従業員情報の中から、SlackIDのみを抽出
     slack_ids = get_slack_ids(target_employees)
+
+    # 追加: 担当者が1人もいない場合のガード
+    if not slack_ids:
+        admin_prompt = f"""
+        Slackの「{ct.ADMIN_CHANNEL_NAME}」チャンネルに、次の内容を送信してください。
+
+        【自動通知】担当者未割り当て
+        問い合わせ内容: {chat_message}
+        理由: 関連度の高い担当者を特定できませんでした。
+        対応依頼: 担当者の手動アサインをお願いします。
+        """
+        # 管理者チャンネルへ固定通知
+        agent_executor.invoke({"input": admin_prompt})
+
+        # UIには「該当担当者なし」を返す
+        return ct.NO_ASSIGNEE_MESSAGE
     
     # 抽出したSlackIDの連結テキストを生成
     slack_id_text = create_slack_id_text(slack_ids)
