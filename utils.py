@@ -461,7 +461,7 @@ def notice_slack(chat_message):
     # 追加: 担当者が1人もいない場合のガード
     if not slack_ids:
         admin_prompt = f"""
-        Slackの「{ct.ADMIN_CHANNEL_NAME}」チャンネルに、次の内容を送信してください。
+        Slackの「{ct.SLACK_CHANNEL_NAME}」チャンネルに、次の内容を送信してください。
 
         【自動通知】担当者未割り当て
         問い合わせ内容: {chat_message}
@@ -470,12 +470,18 @@ def notice_slack(chat_message):
         """
         # 管理者チャンネルへ固定通知
         agent_executor.invoke({"input": admin_prompt})
+        admin_invoke_result = agent_executor.invoke({"input": admin_prompt})
+        logger.info({"notice_slack.admin_invoke_result": admin_invoke_result})
 
         # UIには「該当担当者なし」を返す
         return ct.NO_ASSIGNEE_MESSAGE
     
     # 抽出したSlackIDの連結テキストを生成
     slack_id_text = create_slack_id_text(slack_ids)
+
+    # 追加: 選定理由を作成
+    selection_reasons = create_selection_reasons(chat_message, target_employees)
+    logger.info({"notice_slack.selection_reasons": selection_reasons})
     
     # プロンプトに埋め込むための（問い合わせ内容と関連性が高い）従業員情報テキストを取得
     context = get_context(target_employees)
@@ -485,10 +491,10 @@ def notice_slack(chat_message):
 
     # Slack通知用のプロンプト生成
     prompt = PromptTemplate(
-        input_variables=["slack_id_text", "query", "context", "now_datetime"],
+        input_variables=["slack_id_text", "query", "context", "now_datetime", "selection_reasons"],
         template=ct.SYSTEM_PROMPT_NOTICE_SLACK,
     )
-    prompt_message = prompt.format(slack_id_text=slack_id_text, query=chat_message, context=context, now_datetime=now_datetime)
+    prompt_message = prompt.format(slack_id_text=slack_id_text, query=chat_message, context=context, now_datetime=now_datetime, selection_reasons=selection_reasons)
 
     # Slack通知の実行
     invoke_result = agent_executor.invoke({"input": prompt_message})
@@ -639,6 +645,27 @@ def get_context(docs):
         context += doc.page_content + "\n\n"
 
     return context
+
+def create_selection_reasons(chat_message, target_employees):
+    """
+    選定された従業員ごとの理由テキストをLLMで生成
+    """
+    if not target_employees:
+        return "該当担当者が見つからなかったため、管理者確認が必要です。"
+
+    selected_context = get_context(target_employees)
+
+    prompt = PromptTemplate(
+        input_variables=["query", "selected_context"],
+        template=ct.SYSTEM_PROMPT_SELECTION_REASON,
+    )
+    prompt_text = prompt.format(
+        query=chat_message,
+        selected_context=selected_context,
+    )
+
+    result = st.session_state.llm.invoke(prompt_text)
+    return result.content if hasattr(result, "content") else str(result)
 
 
 def get_datetime():

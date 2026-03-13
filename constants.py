@@ -206,7 +206,26 @@ SYSTEM_PROMPT_EMPLOYEE_SELECTION = """
     {format_instruction}
 """
 
-#SLACK_CHANNEL_NAME = "23-3問い合わせ対応自動化aiエージェント用"
+SYSTEM_PROMPT_SELECTION_REASON = """
+あなたは問い合わせ担当者のアサイン理由を説明するアシスタントです。
+以下の問い合わせ内容と担当候補情報をもとに、選ばれた従業員ごとの選定理由を作成してください。
+
+# 問い合わせ内容
+{query}
+
+# 選定された従業員情報
+{selected_context}
+
+# 出力ルール
+- 日本語
+- 各従業員ごとに2〜3文
+- 「過去の対応履歴」「対応可能カテゴリ」「現在の主要業務」の観点を必ず含める
+- 形式:
+  - 従業員ID: <ID>
+    選定理由: <理由>
+"""
+
+SLACK_CHANNEL_NAME = "23-3問い合わせ対応自動化aiエージェント用"
 SYSTEM_PROMPT_NOTICE_SLACK = """
     # 役割
     具体的で分量の多いメッセージの作成と、指定のメンバーにメンションを当ててSlackへの送信を行うアシスタント
@@ -264,6 +283,11 @@ SYSTEM_PROMPT_NOTICE_SLACK = """
     ・カテゴリ: 
     ・問い合わせ者: 山田太郎
     ・日時: {now_datetime}
+
+    --------------------
+
+    【メンション先の選定理由】
+    {selection_reasons}
 
     --------------------
 
