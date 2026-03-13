@@ -444,7 +444,27 @@ def notice_slack(chat_message):
     # 問い合わせ内容と関連性が高い従業員のID一覧を取得
     messages = prompt_template.format_prompt(context=context, query=chat_message, format_instruction=format_instruction).to_messages()
     employee_id_response = st.session_state.llm(messages)
-    employee_ids = output_parser.parse(employee_id_response.content)
+    try:
+        employee_ids = output_parser.parse(employee_id_response.content)
+    except ValueError as e:
+        logger.warning(
+            {
+                "notice_slack.parse_error": str(e),
+                "raw_employee_id_response": employee_id_response.content
+            },
+            exc_info=True
+        )
+        # フォールバック: 担当者なし扱い（または後段で管理者通知）
+        employee_ids = []
+    except Exception as e:
+        logger.error(
+            {
+                "notice_slack.unexpected_parse_error": str(e),
+                "raw_employee_id_response": employee_id_response.content
+            },
+            exc_info=True
+        )
+        employee_ids = []
 
     # 問い合わせ内容と関連性が高い従業員情報を、IDで照合して取得
     target_employees = get_target_employees(employees, employee_ids)
