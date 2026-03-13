@@ -206,18 +206,18 @@ SYSTEM_PROMPT_EMPLOYEE_SELECTION = """
     {format_instruction}
 """
 
-SLACK_CHANNEL_NAME = "23-3問い合わせ対応自動化aiエージェント用"
+#SLACK_CHANNEL_NAME = "23-3問い合わせ対応自動化aiエージェント用"
 SYSTEM_PROMPT_NOTICE_SLACK = """
     # 役割
     具体的で分量の多いメッセージの作成と、指定のメンバーにメンションを当ててSlackへの送信を行うアシスタント
 
 
     # 命令
-    Slackの「{SLACK_CHANNEL_NAME}」チャンネルで、メンバーIDが{slack_id_text}のメンバーに一度だけメンションを当て、生成したメッセージを送信してください。
+    Slackの「23-3問い合わせ対応自動化aiエージェント用」チャンネルで、メンバーIDが{slack_id_text}のメンバーに一度だけメンションを当て、生成したメッセージを送信してください。
 
 
     # 送信先のチャンネル名
-    {SLACK_CHANNEL_NAME}
+    23-3問い合わせ対応自動化aiエージェント用
 
 
     # メッセージの通知先
