@@ -123,6 +123,8 @@ SEARCH_COMPETITORS_INFO_TOOL_NAME = "search_competitors_info_tool"
 SEARCH_COMPETITORS_INFO_TOOL_DESCRIPTION = "EcoTeeの競合比較が目的の質問でのみ使用。競合他社名、強み、弱み、価格帯、主要機能をWeb検索で収集し、日本語で要点を箇条書きで返す。"
 PLAN_CUSTOMER_MARKETING_STRATEGY_TOOL_NAME = "plan_customer_marketing_strategy_tool"
 PLAN_CUSTOMER_MARKETING_STRATEGY_TOOL_DESCRIPTION = "マーケティング戦略立案が目的の質問でのみ使用。サービス内容や顧客の基本情報をもとに、効果的なマーケティング戦略を3つ、具体的に提案する。"
+SEARCH_ALL_INFO_TOOL_NAME = "search_all_info_tool"
+SEARCH_ALL_INFO_TOOL_DESCRIPTION = "会社情報、サービス情報、顧客情報のすべてを横断的に検索する場合に使用"
 
 SERVICE_DESCRIPTION = "個人や法人が簡単にオリジナルデザインのTシャツを作成し、環境に配慮した素材で製品化できるWebサービス"
 

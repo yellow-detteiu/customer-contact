@@ -311,6 +311,23 @@ def run_plan_customer_marketing_strategy_tool(param: str) -> str:
 
     return answer
 
+def run_all_doc_chain(param):
+    """
+    全データ横断検索に特化したTool設定用の関数
+
+    Args:
+        param: ユーザー入力値
+
+    Returns:
+        LLMからの回答
+    """
+    # 全データ横断検索に特化したChainを実行してLLMからの回答取得
+    ai_msg = st.session_state.rag_chain.invoke({"input": param, "chat_history": st.session_state.chat_history})
+
+    # 会話履歴への追加
+    st.session_state.chat_history.extend([HumanMessage(content=param), AIMessage(content=ai_msg["answer"])])
+
+    return ai_msg["answer"]
 
 def delete_old_conversation_log(result):
     """

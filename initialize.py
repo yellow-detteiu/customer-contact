@@ -173,6 +173,12 @@ def initialize_agent_executor():
             func=utils.run_plan_customer_marketing_strategy_tool,
             description=ct.PLAN_CUSTOMER_MARKETING_STRATEGY_TOOL_DESCRIPTION
         ),
+        # 全データ横断検索用のTool
+        Tool(
+            name=ct.SEARCH_ALL_INFO_TOOL_NAME,
+            func=utils.run_all_doc_chain,  # 新規関数を作成
+            description=ct.SEARCH_ALL_INFO_TOOL_DESCRIPTION
+        )
     ]
 
     # Agent Executorの作成
