@@ -379,6 +379,8 @@ def notice_slack(chat_message):
         問い合わせサンクスメッセージ
     """
 
+    logger = logging.getLogger(ct.LOGGER_NAME)  # 追加
+
     # Slack通知用のAgent Executorを作成
     toolkit = SlackToolkit()
     tools = toolkit.get_tools()
@@ -450,6 +452,12 @@ def notice_slack(chat_message):
     # 問い合わせ内容と関連性が高い従業員情報の中から、SlackIDのみを抽出
     slack_ids = get_slack_ids(target_employees)
 
+    # 追加: 従業員一覧、従業員数、スラックid一覧、チャットメッセージ ログ
+    logger.info({"notice_slack.employee_ids": employee_ids})
+    logger.info({"notice_slack.target_employees_len": len(target_employees)})
+    logger.info({"notice_slack.slack_ids": slack_ids})
+    logger.info({"notice_slack.chat_message": chat_message})
+
     # 追加: 担当者が1人もいない場合のガード
     if not slack_ids:
         admin_prompt = f"""
@@ -483,7 +491,10 @@ def notice_slack(chat_message):
     prompt_message = prompt.format(slack_id_text=slack_id_text, query=chat_message, context=context, now_datetime=now_datetime)
 
     # Slack通知の実行
-    agent_executor.invoke({"input": prompt_message})
+    invoke_result = agent_executor.invoke({"input": prompt_message})
+
+    # 追加: invoke戻り値ログ（大きすぎる場合は必要項目だけに絞る）
+    logger.info({"notice_slack.invoke_result": invoke_result})
 
     return ct.CONTACT_THANKS_MESSAGE
 
