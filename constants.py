@@ -124,7 +124,7 @@ SEARCH_COMPETITORS_INFO_TOOL_DESCRIPTION = "EcoTeeの競合比較が目的の質
 PLAN_CUSTOMER_MARKETING_STRATEGY_TOOL_NAME = "plan_customer_marketing_strategy_tool"
 PLAN_CUSTOMER_MARKETING_STRATEGY_TOOL_DESCRIPTION = "マーケティング戦略立案が目的の質問でのみ使用。サービス内容や顧客の基本情報をもとに、効果的なマーケティング戦略を3つ、具体的に提案する。"
 
-SERVICE_DISCRIPTION = "個人や法人が簡単にオリジナルデザインのTシャツを作成し、環境に配慮した素材で製品化できるWebサービス"
+SERVICE_DESCRIPTION = "個人や法人が簡単にオリジナルデザインのTシャツを作成し、環境に配慮した素材で製品化できるWebサービス"
 
 # ==========================================
 # マーケティング戦略Tool関連
@@ -226,6 +226,7 @@ SYSTEM_PROMPT_SELECTION_REASON = """
 """
 
 SLACK_CHANNEL_NAME = "23-3問い合わせ対応自動化aiエージェント用"
+NO_ASSIGNEE_MESSAGE = "申し訳ございませんが、今回の問い合わせ内容に最も適した担当者を特定できませんでした。引き続き内容を確認し、適切な担当者が対応できるよう努めます。ご不便をおかけして申し訳ございませんが、何卒ご理解いただけますと幸いです。"
 SYSTEM_PROMPT_NOTICE_SLACK = """
     # 役割
     具体的で分量の多いメッセージの作成と、指定のメンバーにメンションを当ててSlackへの送信を行うアシスタント
